@@ -30,3 +30,20 @@ E:\C# Projekty\AzureSignalR\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.Vi
 E:\C# Projekty\AzureSignalR\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.dll
 E:\C# Projekty\AzureSignalR\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.pdb
 E:\C# Projekty\AzureSignalR\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.csproj.CopyComplete
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\bin\Debug\netcoreapp2.1\AzureSignalR.deps.json
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\bin\Debug\netcoreapp2.1\AzureSignalR.runtimeconfig.json
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\bin\Debug\netcoreapp2.1\AzureSignalR.runtimeconfig.dev.json
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\bin\Debug\netcoreapp2.1\AzureSignalR.dll
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\bin\Debug\netcoreapp2.1\AzureSignalR.pdb
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\bin\Debug\netcoreapp2.1\AzureSignalR.Views.dll
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.csprojAssemblyReference.cache
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.csproj.CoreCompileInputs.cache
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.RazorAssemblyInfo.cache
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.RazorAssemblyInfo.cs
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.AssemblyInfoInputs.cache
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.AssemblyInfo.cs
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.RazorTargetAssemblyInfo.cache
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.dll
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.pdb
+C:\Users\student\Desktop\projektazure\air-conditioner-app\AzureSignalR\obj\Debug\netcoreapp2.1\AzureSignalR.csproj.CopyComplete
