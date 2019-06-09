@@ -3,7 +3,7 @@ import { fetchState } from "../actions/airActions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import styled from 'styled-components';
-//import axios from 'axios';
+import axios from 'axios';
 import * as signalR from '@aspnet/signalr';
 
 import CONSTANTS from '../helpers/constants';
@@ -25,34 +25,40 @@ class MainComponent extends Component {
     }
 
     switchConditionerState(state) {
-        // const requestBody = { state };
-        // const config = {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': localStorage.getItem('user')
-        //     }
-        // };
-        // this.setState({ buttonClicked: true });
+        const requestBody = { name: localStorage.getItem('user') };
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('user')
+            }
+        };
+        this.setState({ buttonClicked: true });
 
-        // axios.post(
-        //     `${CONSTANTS.BACKEND_URL}/conditioner/switch`,
-        //     requestBody,
-        //     config
-        // ).then((response) => {
-        //     alert(response.data.message);
-        // }).catch(() => {
-        //     alert('You have to be inside.');
-        // }).finally(() => this.setState({ buttonClicked: false }));
-        let connection = new signalR.HubConnectionBuilder()
-        .withUrl("/chat")
-        .build();
- 
-        connection.on("ChangeStateMessage", data => {
-            alert(data);
-            this.setState({ buttonClicked: false });
+        axios.post(
+            `${CONSTANTS.BACKEND_URL}/conditioner/switch`,
+            requestBody,
+            config
+        ).then((response) => {
+            alert(response.data.isInside);
+
+            if (response.data.isInside) {
+                let connection = new signalR.HubConnectionBuilder()
+                .withUrl("/chat")
+                .build();
+         
+                connection.on("ChangeStateMessage", data => {
+                    alert(data);
+                    this.setState({ buttonClicked: false });
+                });
+         
+                connection.start().then(() => connection.invoke("ChangeStateMessage", state));
+            } else {
+                alert('You have to be inside.');
+            }
+        }).catch((error) => {
+            console.log(error);
+            this.setState({ buttonClicked: false })
         });
- 
-        connection.start().then(() => connection.invoke("ChangeStateMessage", state));
     }
 
     render() {

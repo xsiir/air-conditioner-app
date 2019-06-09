@@ -31,13 +31,16 @@ class LoginComponent extends React.Component {
     onButtonClick() {
         const { inputValue } = this.state;
         const { login } = this.props;
-        const requestBody = { name: inputValue };
+        const requestBody = { nick: inputValue };
+        const url = "https://funkcja1.azurewebsites.net/api/HttpTrigger1?code=aHoMxKb/Uuuz53cpypSVOfX8kY/qCs1E/W8S3rNOkuz1Etgd5sBr0A==";
         this.setState({ buttonClicked: true });
 
-        axios.post(`${CONSTANTS.BACKEND_URL}/user/login`, requestBody).then((response) => {
+        axios.post(url, requestBody).then((response) => {
+            console.log(response);
             localStorage.setItem('user', response.data);
-            login(response.data);
-        }).catch(() => {
+            login(response.data.name);
+        }).catch((error) => {
+            console.log(error)
             alert('Name is not valid.');
             this.setState({ buttonClicked: false });
         });
