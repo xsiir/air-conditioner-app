@@ -1,8 +1,14 @@
-const setLoginState = (isLogged) => ({
-    type: "LOG",
-    payload: isLogged
+const setName = (name) => ({
+    type: "SET_NAME",
+    payload: name
+});
+
+const logout = () => ({
+    type: "SET_NAME",
+    payload: ""
 });
 
 export {
-    setLoginState
+    setName,
+    logout
 };

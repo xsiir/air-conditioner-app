@@ -30,14 +30,16 @@ class LoginComponent extends React.Component {
 
     onButtonClick() {
         const { inputValue } = this.state;
+        const { login } = this.props;
         const requestBody = { name: inputValue };
         this.setState({ buttonClicked: true });
 
         axios.post(`${CONSTANTS.BACKEND_URL}/user/login`, requestBody).then((response) => {
-            localStorage.setItem('user', response);
-            this.props.login(true);
+            localStorage.setItem('user', response.data);
+            login(response.data);
         }).catch(() => {
             alert('Name is not valid.');
+            this.setState({ buttonClicked: false });
         });
     }
 

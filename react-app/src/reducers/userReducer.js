@@ -1,11 +1,11 @@
 const userReducer = (state = {
-    logged: false
+    name: ""
 }, action) => {
     switch (action.type) {
-        case "LOG":
+        case "SET_NAME":
             state = {
                 ...state,
-                logged: action.payload
+                name: action.payload
             };
             break;
     }

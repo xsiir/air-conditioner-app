@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Header from '../components/HeaderComponent';
 import MainComponent from '../components/MainComponent';
 import LoginComponent from '../components/LoginComponent';
-import { setLoginState } from "../actions/userActions";
+import { setName, logout } from "../actions/userActions";
 
 const Container = styled.div`
   margin: 0 auto;
@@ -14,21 +14,30 @@ const Container = styled.div`
 `;
 
 class App extends React.Component {
+  componentWillMount() {
+    const { user } = this.props;
+    const username = localStorage.getItem('user');
+
+    if (username && !user.name) {
+      this.props.setName(username);
+    }
+  }
+
   render() {
-    const { setLoginState } = this.props;
+    const { user, setName, logout } = this.props;
     const isLogged = localStorage.getItem('user');
 
     return (
       <div>
         <Header
           userLogged={isLogged}
-          logout={setLoginState}
+          logout={logout}
         />
         <Container>
           {isLogged ? (
-            <MainComponent />
+            <MainComponent username={user.name} />
           ) : (
-            <LoginComponent login={setLoginState} />
+            <LoginComponent login={(name) => setName(name)} />
           )}
         </Container>
       </div>
@@ -36,19 +45,14 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     user: state.user
-  };
-};
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setLoginState: (loginState) => {
-      dispatch(setLoginState(loginState));
-    }
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+    setName: (name) => dispatch(setName(name)),
+    logout: () => dispatch(logout())
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 

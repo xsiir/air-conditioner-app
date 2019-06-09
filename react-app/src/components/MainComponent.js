@@ -31,15 +31,16 @@ class MainComponent extends Component {
 
     render() {
         const { buttonClicked } = this.state;
-        const { name } = this.props;
+        const { username } = this.props;
         return buttonClicked ? (
             <Container>
-                <small>Zalogowany jako: {name}</small>
+                <small>Zalogowany jako: {username}</small>
                 <Button disabled>TURN ON</Button>
                 <Button disabled>TURN OFF</Button>
             </Container>
         ) : (
             <Container>
+                <small>Zalogowany jako: {username}</small>
                 <Button
                     background="#90ee90"
                     onClick={() => this.turnOnConditioner()}
