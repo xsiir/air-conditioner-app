@@ -16,8 +16,20 @@ const Container = styled.div`
 class MainComponent extends Component {
     state = {
         airState: "",
-        buttonClicked: false
+        buttonClicked: false,
+        connection: null
     };
+
+    componentWillMount() {
+        const connection = new signalR.HubConnectionBuilder()
+        .withUrl("https://projekthub.azurewebsites.net/air-conditioner")
+        .build();
+        connection.start();
+
+        this.setState({
+            connection
+        });
+    }
 
     componentDidMount() {
        this.props.fetchState();
@@ -40,26 +52,26 @@ class MainComponent extends Component {
                     this.sendSignalrData(state);
                 } else {
                     alert('You have to be inside.');
+                    this.setState({ buttonClicked: false })
                 }
             } else {
                 alert('Your session expired. Please log in again.');
+                this.setState({ buttonClicked: false })
             }
         }).catch((error) => {
             console.log(error);
-        }).finally(() => this.setState({ buttonClicked: false }));
+            this.setState({ buttonClicked: false })
+        });
     }
 
     sendSignalrData(state) {
-        let connection = new signalR.HubConnectionBuilder()
-        .withUrl("/chat")
-        .build();
- 
+        const { connection } = this.state;
         connection.on("ChangeStateMessage", data => {
-            alert(data);
+            data === 1 ? alert('ON') : alert('OFF');
             this.setState({ buttonClicked: false });
         });
  
-        connection.start().then(() => connection.invoke("ChangeStateMessage", state));
+        connection.invoke("ChangeStateMessage", state);
     }
 
     render() {
