@@ -4,40 +4,52 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import styled from 'styled-components';
 
+import Button from './Button';
+
 const Container = styled.div`
     display: flex;
     flex-direction: column;
 `;
 
-const Button = styled.button`
-    margin-top: 30px;
-    background: ${props => props.off ? '#dc143c' : '#90ee90'};
-    border: 0;
-    height: 50px;
-    border-radius: 15px;
-    font-size: 18px;
-    color: #fff;
-    cursor: pointer;
-    font-weight: 700;
-    &:active {
-        background: ${props => props.off ? '#ba021a' : '#70cc70'};
-    }
-`;
-
 class MainComponent extends Component {
     state = {
-        airState: ""
+        airState: "",
+        buttonClicked: false
     };
 
     componentDidMount() {
        this.props.fetchState();
     }
 
+    turnOnConditioner() {
+        this.setState({ buttonClicked: true });
+    }
+
+    turnOffConditioner() {
+        this.setState({ buttonClicked: true });
+    }
+
     render() {
-        return (
+        const { buttonClicked } = this.state;
+        return buttonClicked ? (
             <Container>
-                <Button>TURN ON</Button>
-                <Button off>TURN OFF</Button>
+                <Button disabled>TURN ON</Button>
+                <Button disabled>TURN OFF</Button>
+            </Container>
+        ) : (
+            <Container>
+                <Button
+                    background="#90ee90"
+                    onClick={() => this.turnOnConditioner()}
+                >
+                    TURN ON
+                </Button>
+                <Button
+                    background="#dc143c"
+                    onClick={() => this.turnOffConditioner()}
+                >
+                    TURN OFF
+                </Button>
             </Container>
         );
     }

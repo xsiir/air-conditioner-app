@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Button from './Button';
 
 const Container = styled.div`
     display: flex;
@@ -10,22 +11,7 @@ const Input = styled.input`
     font-size: 18px;
     border: 0;
     border-bottom: 1px solid #333;
-    margin: 30px 0;
     padding-bottom: 8px;
-`;
-
-const Button = styled.button`
-    background: ${props => props.disabled ? '#666' : '#90ee90'};
-    border: 0;
-    height: 50px;
-    border-radius: 15px;
-    font-size: 18px;
-    color: ${props => props.disabled ? '#aaa' : '#fff'};
-    cursor: ${props => props.disabled ? 'wait' : 'pointer'};
-    font-weight: 700;
-    &:active {
-        background: #70cc70;
-    }
 `;
 
 class LoginComponent extends React.Component {
@@ -49,7 +35,10 @@ class LoginComponent extends React.Component {
                         LOG IN
                     </Button>
                 ) : (
-                    <Button onClick={() => this.onButtonClick()}>
+                    <Button
+                        background='#90ee90'
+                        onClick={() => this.onButtonClick()}
+                    >
                         LOG IN
                     </Button>
                 )}
