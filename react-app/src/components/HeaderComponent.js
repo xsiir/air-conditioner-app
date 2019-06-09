@@ -38,7 +38,7 @@ class Header extends React.Component {
     }
 
     render() {
-        const { userLogged, logout } = this.props;
+        const { userLogged } = this.props;
         return (
             <Container>
                 <Wrapper>

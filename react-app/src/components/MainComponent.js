@@ -3,7 +3,9 @@ import { fetchState } from "../actions/airActions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import styled from 'styled-components';
+import axios from 'axios';
 
+import CONSTANTS from '../helpers/constants';
 import Button from './Button';
 
 const Container = styled.div`
@@ -21,12 +23,25 @@ class MainComponent extends Component {
        this.props.fetchState();
     }
 
-    turnOnConditioner() {
+    switchConditionerState(state) {
+        const requestBody = { state };
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('user')
+            }
+        };
         this.setState({ buttonClicked: true });
-    }
 
-    turnOffConditioner() {
-        this.setState({ buttonClicked: true });
+        axios.post(
+            `${CONSTANTS.BACKEND_URL}/conditioner/switch`,
+            requestBody,
+            config
+        ).then((response) => {
+            alert(response.data.message);
+        }).catch(() => {
+            alert('You have to be inside.');
+        }).finally(() => this.setState({ buttonClicked: false }));
     }
 
     render() {
@@ -43,13 +58,13 @@ class MainComponent extends Component {
                 <small>Zalogowany jako: {username}</small>
                 <Button
                     background="#90ee90"
-                    onClick={() => this.turnOnConditioner()}
+                    onClick={() => this.switchConditionerState(1)}
                 >
                     TURN ON
                 </Button>
                 <Button
                     background="#dc143c"
-                    onClick={() => this.turnOffConditioner()}
+                    onClick={() => this.switchConditionerState(0)}
                 >
                     TURN OFF
                 </Button>
