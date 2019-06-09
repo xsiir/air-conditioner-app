@@ -32,16 +32,17 @@ class MainComponent extends Component {
                 'Authorization': localStorage.getItem('user')
             }
         };
+        const url = "https://funkcja1.azurewebsites.net/api/HttpTrigger1?code=aHoMxKb/Uuuz53cpypSVOfX8kY/qCs1E/W8S3rNOkuz1Etgd5sBr0A==";
         this.setState({ buttonClicked: true });
 
         axios.post(
-            `${CONSTANTS.BACKEND_URL}/conditioner/switch`,
+            url,
             requestBody,
             config
         ).then((response) => {
-            alert(response.data.isInside);
+            alert(response.data.recordset[0].isInside);
 
-            if (response.data.isInside) {
+            if (response.data.recordset[0].isInside) {
                 let connection = new signalR.HubConnectionBuilder()
                 .withUrl("/chat")
                 .build();

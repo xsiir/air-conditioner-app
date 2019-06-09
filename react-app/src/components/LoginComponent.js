@@ -37,10 +37,10 @@ class LoginComponent extends React.Component {
 
         axios.post(url, requestBody).then((response) => {
             console.log(response);
-            localStorage.setItem('user', response.data);
-            login(response.data.name);
+            localStorage.setItem('user', response.data.recordset[0].name);
+            login(response.data.recordset[0].name);
         }).catch((error) => {
-            console.log(error)
+            console.log(error);
             alert('Name is not valid.');
             this.setState({ buttonClicked: false });
         });
