@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import CONSTANTS from '../helpers/constants';
 import Button from './Button';
 
 const Container = styled.div`
@@ -36,12 +35,15 @@ class LoginComponent extends React.Component {
         this.setState({ buttonClicked: true });
 
         axios.post(url, requestBody).then((response) => {
-            console.log(response);
-            localStorage.setItem('user', response.data.recordset[0].name);
-            login(response.data.recordset[0].name);
+            if (response.data.data.recordset.length > 0) {
+                localStorage.setItem('user', response.data.data.recordset[0].name);
+                login(response.data.data.recordset[0].name);
+            } else {
+                alert('Name is not valid.');
+                this.setState({ buttonClicked: false });
+            }
         }).catch((error) => {
             console.log(error);
-            alert('Name is not valid.');
             this.setState({ buttonClicked: false });
         });
     }

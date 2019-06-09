@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import axios from 'axios';
 import * as signalR from '@aspnet/signalr';
 
-import CONSTANTS from '../helpers/constants';
 import Button from './Button';
 
 const Container = styled.div`
@@ -25,7 +24,7 @@ class MainComponent extends Component {
     }
 
     switchConditionerState(state) {
-        const requestBody = { name: localStorage.getItem('user') };
+        const requestBody = { nick: localStorage.getItem('user') };
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -35,31 +34,32 @@ class MainComponent extends Component {
         const url = "https://funkcja1.azurewebsites.net/api/HttpTrigger1?code=aHoMxKb/Uuuz53cpypSVOfX8kY/qCs1E/W8S3rNOkuz1Etgd5sBr0A==";
         this.setState({ buttonClicked: true });
 
-        axios.post(
-            url,
-            requestBody,
-            config
-        ).then((response) => {
-            alert(response.data.recordset[0].isInside);
-
-            if (response.data.recordset[0].isInside) {
-                let connection = new signalR.HubConnectionBuilder()
-                .withUrl("/chat")
-                .build();
-         
-                connection.on("ChangeStateMessage", data => {
-                    alert(data);
-                    this.setState({ buttonClicked: false });
-                });
-         
-                connection.start().then(() => connection.invoke("ChangeStateMessage", state));
+        axios.post(url, requestBody, config).then((response) => {
+            if (response.data.data.recordset.length > 0) {
+                if (response.data.data.recordset[0].isInside) {
+                    this.sendSignalrData(state);
+                } else {
+                    alert('You have to be inside.');
+                }
             } else {
-                alert('You have to be inside.');
+                alert('Your session expired. Please log in again.');
             }
         }).catch((error) => {
             console.log(error);
-            this.setState({ buttonClicked: false })
+        }).finally(() => this.setState({ buttonClicked: false }));
+    }
+
+    sendSignalrData(state) {
+        let connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chat")
+        .build();
+ 
+        connection.on("ChangeStateMessage", data => {
+            alert(data);
+            this.setState({ buttonClicked: false });
         });
+ 
+        connection.start().then(() => connection.invoke("ChangeStateMessage", state));
     }
 
     render() {
