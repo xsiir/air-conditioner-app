@@ -31,8 +31,10 @@ class MainComponent extends Component {
 
     render() {
         const { buttonClicked } = this.state;
+        const { name } = this.props;
         return buttonClicked ? (
             <Container>
+                <small>Zalogowany jako: {name}</small>
                 <Button disabled>TURN ON</Button>
                 <Button disabled>TURN OFF</Button>
             </Container>

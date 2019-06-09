@@ -31,20 +31,30 @@ const Logout = styled.button`
     cursor: pointer;
 `;
 
-const Header = ({ userLogged, logout }) => (
-    <Container>
-        <Wrapper>
-            <Title>
-                Air Conditioner
-            </Title>
-            <Logout
-                userLogged={userLogged}
-                onClick={() => logout(false)}
-            >
-                Wyloguj
-            </Logout>
-        </Wrapper>
-    </Container>
-);
+class Header extends React.Component {
+    onLogoutClick() {
+        localStorage.removeItem('user');
+        this.props.logout(false);
+    }
+
+    render() {
+        const { userLogged, logout } = this.props;
+        return (
+            <Container>
+                <Wrapper>
+                    <Title>
+                        Air Conditioner
+                    </Title>
+                    <Logout
+                        userLogged={userLogged}
+                        onClick={() => this.onLogoutClick()}
+                    >
+                        Wyloguj
+                    </Logout>
+                </Wrapper>
+            </Container>
+        );
+    }
+}
 
 export default Header;

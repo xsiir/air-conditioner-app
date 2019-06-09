@@ -15,16 +15,17 @@ const Container = styled.div`
 
 class App extends React.Component {
   render() {
-    const { user, setLoginState } = this.props;
+    const { setLoginState } = this.props;
+    const isLogged = localStorage.getItem('user');
 
     return (
       <div>
         <Header
-          userLogged={user.logged}
+          userLogged={isLogged}
           logout={setLoginState}
         />
         <Container>
-          {user.logged ? (
+          {isLogged ? (
             <MainComponent />
           ) : (
             <LoginComponent login={setLoginState} />
