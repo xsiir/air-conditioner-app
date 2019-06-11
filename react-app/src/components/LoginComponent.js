@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-
+import { bindActionCreators } from "redux";
 import Button from './Button';
+import { connect } from "react-redux";
+import {login} from "../actions/userActions";
 
 const Container = styled.div`
     display: flex;
@@ -29,28 +31,16 @@ class LoginComponent extends React.Component {
 
     onButtonClick() {
         const { inputValue } = this.state;
-        const { login } = this.props;
-        const requestBody = { nick: inputValue };
-        const url = "https://funkcja1.azurewebsites.net/api/HttpTrigger1?code=aHoMxKb/Uuuz53cpypSVOfX8kY/qCs1E/W8S3rNOkuz1Etgd5sBr0A==";
-        this.setState({ buttonClicked: true });
-
-        axios.post(url, requestBody).then((response) => {
-            if (response.data.data.recordset.length > 0) {
-                localStorage.setItem('user', response.data.data.recordset[0].name);
-                login(response.data.data.recordset[0].name);
-            } else {
-                alert('Name is not valid.');
-                this.setState({ buttonClicked: false });
-            }
-        }).catch((error) => {
-            console.log(error);
-            this.setState({ buttonClicked: false });
-        });
+        this.props.login(inputValue);
     }
 
     render() {
         const { buttonClicked, inputValue } = this.state;
-
+        const name = this.props.name;
+        if(name && name!=""){
+            alert(name);
+        }
+        console.log(name);
         return (
             <Container>
                 <Input
@@ -75,5 +65,12 @@ class LoginComponent extends React.Component {
         );
     }
 }
+const mapStateToProps = (state) => ({
+    name: state.name
+});
 
-export default LoginComponent;
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    login: login
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
