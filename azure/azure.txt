@@ -1,0 +1,125 @@
+const sql = require('mssql');
+const parser = require('mssql-connection-string');
+
+class MonitoringDbContext {
+
+    constructor(connectionString, log) {
+        log("PeopleDbContext object has been created.");
+        this.log = log;
+        this.config = parser(connectionString);
+        
+        this.getUsers = this.getUsers.bind(this);
+
+    }
+
+    async getUsers() {
+        
+        const connection = await new sql.ConnectionPool(this.config).connect();
+        const request = new sql.Request(connection);
+        
+        const users = await request.query('select * from users');
+ 
+        return users;
+    }
+
+    async getUser(data){
+         const connection = await new sql.ConnectionPool(this.config).connect();
+        const request = new sql.Request(connection);
+        
+        const user = await request.query("select * from users where name='"+data.nick+"'" );
+ 
+        return user;
+    }
+
+    async addData(data){
+           
+        const connection = await new sql.ConnectionPool(this.config).connect();
+        const request = new sql.Request(connection);
+        this.log("data:"+data.name);
+        
+ 
+        const result = await request.query("insert into users(cardCode,name,surname,role,isInside) values ("+data.ID+",'"+data.name+"','"+data.surname+"',"+data.isAdmin+","+data.isInside+")");
+               
+        this.log("result:"+result);
+
+        return result;
+    }
+
+    async updateData(data){
+           
+        const connection = await new sql.ConnectionPool(this.config).connect();
+        const request = new sql.Request(connection);
+        this.log("data:"+data.name);
+        let result;
+     
+        result = await request.query("update users set isIn="+data.isInside+" where cardCode="+data.ID+"" );
+          
+        this.log("result:"+result);
+
+        return result;
+    }
+
+}
+
+module.exports = async function (context, req) {
+   
+    if(req.method == "GET"){    
+   await functionWrapper(context, req, async (body) => {
+       
+        const connectionString = process.env['RaspberryPi'];
+       
+        const MonitoringDb = new MonitoringDbContext(connectionString, context.log);
+        
+        body.data = await MonitoringDb.getUsers();
+    });
+    }
+
+       if(req.method =="POST" && req.body.nick){
+        await functionWrapper(context, req, async (body) => {
+        const connectionString = process.env['RaspberryPi'];
+        const MonitoringDb = new MonitoringDbContext(connectionString, context.log);
+        body.data = await MonitoringDb.getUser(req.body);
+    });
+    }else if(req.method == "POST" && !reg.body.nick){
+            await functionWrapper(context, req, async (body) => {
+        const connectionString = process.env['RaspberryPi'];
+        const MonitoringDb = new MonitoringDbContext(connectionString, context.log);
+        body.data = await MonitoringDb.addData(req.body);})
+    
+    }
+
+
+     if(req.method =="PUT"){
+        await functionWrapper(context, req, async (body) => {
+        const connectionString = process.env['RaspberryPi'];
+        const MonitoringDb = new MonitoringDbContext(connectionString, context.log);
+        body.data = await MonitoringDb.updateData(req.body);
+    });
+    }
+};
+
+
+const functionWrapper = async function (context, req, action) {
+    let body = {
+        success: true
+    }
+
+    let status = 200;
+
+    try {
+        context.log('Action - run')
+        await action(body);
+        context.log('Action - done')
+    }
+    catch (ex) {
+        context.log('Action - fail')
+        body.ex = ex;
+        body.success = false;
+        status = 500;
+    }
+
+    context.res = {
+        status: status,
+        body: body
+    }
+}
