@@ -13,11 +13,19 @@ const Container = styled.div`
     flex-direction: column;
 `;
 
+const Dot = styled.div`
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    background: ${props => props.off ? '#ff0000' : '#00ff00'}
+`;
+
 class MainComponent extends Component {
     state = {
         airState: "",
         buttonClicked: false,
-        connection: null
+        connection: null,
+        message: null
     };
 
     componentWillMount() {
@@ -67,7 +75,7 @@ class MainComponent extends Component {
     sendSignalrData(state) {
         const { connection } = this.state;
         connection.on("ChangeStateMessage", data => {
-            data === 1 ? alert('ON') : alert('OFF');
+            data === 1 ? this.setState({ message: 'ON' }) : this.setState({ message: 'OFF' });
             this.setState({ buttonClicked: false });
         });
  
@@ -75,7 +83,7 @@ class MainComponent extends Component {
     }
 
     render() {
-        const { buttonClicked } = this.state;
+        const { buttonClicked, message } = this.state;
         const { username } = this.props;
         return buttonClicked ? (
             <Container>
@@ -98,6 +106,9 @@ class MainComponent extends Component {
                 >
                     TURN OFF
                 </Button>
+                <br />
+                {message === 'ON' && (<>State: <Dot on /></>)}
+                {message === 'OFF' && (<>State: <Dot off /></>)}
             </Container>
         );
     }
